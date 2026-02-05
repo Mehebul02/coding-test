@@ -1,0 +1,27 @@
+import { useState } from "react"
+
+const useCounter = () => {
+    const [count, setCount] = useState(0)
+    const handleIncrement = () => {
+        setCount(count + 1)
+    }
+
+    const handleDecrement = () => {
+        setCount(count - 1)
+        if (count <= 0) {
+            setCount(0)
+        }
+    }
+
+    const handleReset = ()=>{
+        se
+    }
+
+    return {
+        count,
+        handleIncrement,
+        handleDecrement
+    }
+}
+
+export default useCounter;
