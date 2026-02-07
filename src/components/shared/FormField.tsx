@@ -1,4 +1,4 @@
-import type { UseFormRegister } from "react-hook-form";
+import React from "react";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 interface FormFieldProps {
@@ -7,10 +7,12 @@ interface FormFieldProps {
   type?: "text" | "select" | "date";
   options?: string[];
   placeholder?: string;
-  icon?: any;
-  register: UseFormRegister<any>;
-  errors: any;
-  rules?: any;
+  icon?: React.ReactNode;
+  value?: string;
+  onChange?: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => void;
+  error?: string;
 }
 
 const FormField = ({
@@ -19,29 +21,31 @@ const FormField = ({
   type = "text",
   options = [],
   placeholder,
-  icon: Icon,
-  register,
-  errors,
-  rules,
+  icon,
+  value,
+  onChange,
+  error,
 }: FormFieldProps) => {
-  const hasError = errors?.[name];
-
   return (
     <div className="flex flex-col gap-1">
-      <label className="text-[11px] font-medium text-gray-600 uppercase tracking-wide">
+      <label className="text-xs font-medium text-gray-600 uppercase">
         {label}
       </label>
 
       <div className="relative">
         {type === "select" ? (
           <select
-            {...register(name, rules)}
-            className={`w-full border rounded px-3 py-2.5 text-sm bg-white appearance-none pr-8 focus:outline-none
-              ${hasError ? "border-red-500" : "border-gray-300"}`}
+            name={name}
+            value={value ?? ""}
+            onChange={onChange}
+            className={`w-full border rounded px-3 py-2 text-sm appearance-none focus:outline-none ${
+              error ? "border-red-500" : "focus:border-blue-500"
+            }`}
           >
             <option value="">
               {placeholder || `Select ${label.toLowerCase()}`}
             </option>
+
             {options.map((item, idx) => (
               <option key={idx} value={item}>
                 {item}
@@ -50,37 +54,25 @@ const FormField = ({
           </select>
         ) : (
           <input
-            type={type}   
+            type={type}
+            name={name}
+            value={value ?? ""}
             placeholder={placeholder}
-            {...register(name, rules)}
-            className={`w-full border rounded px-3 py-2.5 text-sm bg-white focus:outline-none
-              ${hasError ? "border-red-500" : "border-gray-300"}`}
+            onChange={onChange}
+            className={`w-full border rounded px-3 py-2 text-sm focus:outline-none ${
+              error ? "border-red-500" : "focus:border-blue-500"
+            }`}
           />
         )}
 
-       
-        {type === "select" && (
-          <svg
-            className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
-        )}
-
-   
-        {Icon && (
-          <Icon className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-yellow-500 pointer-events-none" />
+        {icon && (
+          <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none">
+            {icon}
+          </div>
         )}
       </div>
 
-      {hasError && (
-        <span className="text-[10px] text-red-500">
-          {hasError.message as string}
-        </span>
-      )}
+      {error && <span className="text-xs text-red-500">{error}</span>}
     </div>
   );
 };
