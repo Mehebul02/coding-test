@@ -50,7 +50,7 @@ const FormField = ({
           </select>
         ) : (
           <input
-            type={type}   // ✅ date হলে calendar auto open
+            type={type}   
             placeholder={placeholder}
             {...register(name, rules)}
             className={`w-full border rounded px-3 py-2.5 text-sm bg-white focus:outline-none
@@ -58,7 +58,7 @@ const FormField = ({
           />
         )}
 
-        {/* Select arrow */}
+       
         {type === "select" && (
           <svg
             className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none"
@@ -70,7 +70,7 @@ const FormField = ({
           </svg>
         )}
 
-        {/* Calendar icon */}
+   
         {Icon && (
           <Icon className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-yellow-500 pointer-events-none" />
         )}
